@@ -8,7 +8,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
 	.done{
-		color: #22b24c;
+		background-color: #22b24c;
+		color:#fff;
 	}
 	.cancel{
 		color: #eb6864;
@@ -52,13 +53,21 @@
 					<div class="panel-body">
 						<ul class="list-group">
 							<?php
-								$sql = "SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_order.pesanan_khusus, tb_order.status_makanan FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = $meja";
+								$sql = "SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_order.pesanan_khusus, tb_order.status_makanan, tb_order.id_order FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = $meja";
                					$query1 = mysqli_query($conn,$sql);
 								while($result = mysqli_fetch_array($query1, MYSQLI_NUM)){
+								if($result[3] != "Y"){
 							?>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+								<li class="list-group-item">							
+								<a href="done.php?id=<?php echo $result[4] ?>"><span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+								<a href="cancel.php?id=<?php echo $result[4] ?>"><span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+							<?php
+								}else{
+							?>
+								<li class="list-group-item done">							
+							<?php
+								}
+							?>
 								<?php echo "<b>".$result[1]." ".$result[0]."</b>"."<br/>";
 									if(!empty($result[2])){
 										echo $result[2];
