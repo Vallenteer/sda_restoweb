@@ -75,8 +75,9 @@
                         <?php
                             if(!empty($_GET['meja'])){
                             $no_meja = $_GET['meja'];
-                            $query = mysqli_query($conn,"SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_menu.harga FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = '$no_meja'");
+                            $query = mysqli_query($conn,"SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_menu.harga, tb_order.status_pembayaran FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = '$no_meja'");
                             while($result = mysqli_fetch_array($query, MYSQLI_NUM)){
+                                if($result[3] != "Y"){
                         ?>
                         <tr>
                             <td><?php echo $result[0] ?></td>
@@ -85,13 +86,13 @@
                             <td><?php echo $result[1]*$result[2] ?></td>
                         </tr>
                         <?php
-                            }}
+                            }}}
                         ?>
                     </tbody>
                     </tfoot>
                 </table>   
                 <div style="text-align:right">
-                <button type="submit">Bayar</button>    
+                <a href="bill.php?id=<?php echo $no_meja ?>"><button type="submit">Bayar</button></a>    
                 </div>             
                 
             </div>
