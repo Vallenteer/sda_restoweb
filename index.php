@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Dapur</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -51,7 +52,7 @@
 					<div class="panel-body">
 						<ul class="list-group">
 							<?php
-								$sql = "SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_order.pesanan_khusus FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = $meja";
+								$sql = "SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_order.pesanan_khusus, tb_menu.status_makanan FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = $meja";
                					$query1 = mysqli_query($conn,$sql);
 								while($result = mysqli_fetch_array($query1, MYSQLI_NUM)){
 							?>
