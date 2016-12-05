@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Kasir</title>
+        <title>Laporan</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -32,7 +32,7 @@
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="index.php">Dapur</a></li>
                     <li class="active"><a href="kasir.php">Kasir</a></li>
-                    <li><a href="ubahmenu.php">Admin</a></li>                    
+                    <li class="active"><a href="ubahmenu.php">Admin</a></li>                    
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
@@ -41,19 +41,8 @@
             <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-3">
                     <div class="list-group table-of-contents">
-                        <?php
-                            $query = mysqli_query($conn,"SELECT no_meja, SUM(if(status_pembayaran = 'N', 1, 0)) AS status FROM `tb_order`GROUP BY no_meja ASC");
-                            while($result = mysqli_fetch_array($query, MYSQLI_ASSOC)){
-                            if(!empty($_GET['meja']) && $_GET['meja'] == $result['no_meja']){
-                        ?>                        
-                            <a class="list-group-item active" href="kasir.php?meja=<?php echo $result['no_meja'] ?>">Meja <?php echo $result['no_meja'] ?></a>
-                        <?php
-                            }else if($result['status'] > 0){
-                        ?>
-                            <a class="list-group-item" href="kasir.php?meja=<?php echo $result['no_meja'] ?>">Meja <?php echo $result['no_meja'] ?></a>
-                        <?php
-                            }}
-                        ?>
+                            <a class="list-group-item" href="ubahmenu.php">Ubah Menu</a>
+                            <a class="list-group-item active" href="laporan.php">Laporan Penjualan</a>
                     </div>
             </div>
             <div class="col-lg-10 col-md-10 col-sm-9">
@@ -74,11 +63,9 @@
                     </tfoot>
                     <tbody>
                         <?php
-                            if(!empty($_GET['meja'])){
-                            $no_meja = $_GET['meja'];
-                            $query = mysqli_query($conn,"SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_menu.harga, tb_order.status_pembayaran FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = '$no_meja'");
+                            $query = mysqli_query($conn,"SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_menu.harga, tb_order.status_pembayaran FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu");
                             while($result = mysqli_fetch_array($query, MYSQLI_NUM)){
-                                if($result[3] != "Y"){
+                                if($result[3] == "Y"){
                         ?>
                         <tr>
                             <td><?php echo $result[0] ?></td>
@@ -87,15 +74,11 @@
                             <td><?php echo $result[1]*$result[2] ?></td>
                         </tr>
                         <?php
-                            }}}
+                            }}
                         ?>
                     </tbody>
                     </tfoot>
-                </table>   
-                <div style="text-align:right">
-                <a href="bill.php?id=<?php echo $no_meja ?>"><button type="submit">Bayar</button></a>    
-                </div>             
-                
+                </table>                   
             </div>
         </div>
         </div>

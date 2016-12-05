@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Kasir</title>
+        <title>Ubah Menu</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -31,8 +31,8 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="index.php">Dapur</a></li>
-                    <li class="active"><a href="kasir.php">Kasir</a></li>
-                    <li><a href="ubahmenu.php">Admin</a></li>                    
+                    <li><a href="kasir.php">Kasir</a></li>
+                    <li class="active"><a href="ubahmenu.php">Admin</a></li>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
@@ -41,19 +41,8 @@
             <div class="row">
                 <div class="col-lg-2 col-md-2 col-sm-3">
                     <div class="list-group table-of-contents">
-                        <?php
-                            $query = mysqli_query($conn,"SELECT no_meja, SUM(if(status_pembayaran = 'N', 1, 0)) AS status FROM `tb_order`GROUP BY no_meja ASC");
-                            while($result = mysqli_fetch_array($query, MYSQLI_ASSOC)){
-                            if(!empty($_GET['meja']) && $_GET['meja'] == $result['no_meja']){
-                        ?>                        
-                            <a class="list-group-item active" href="kasir.php?meja=<?php echo $result['no_meja'] ?>">Meja <?php echo $result['no_meja'] ?></a>
-                        <?php
-                            }else if($result['status'] > 0){
-                        ?>
-                            <a class="list-group-item" href="kasir.php?meja=<?php echo $result['no_meja'] ?>">Meja <?php echo $result['no_meja'] ?></a>
-                        <?php
-                            }}
-                        ?>
+                            <a class="list-group-item active" href="ubahmenu.php">Ubah Menu</a>
+                            <a class="list-group-item" href="laporan.php">Laporan Penjualan</a>
                     </div>
             </div>
             <div class="col-lg-10 col-md-10 col-sm-9">
@@ -61,33 +50,24 @@
                     <thead>
                         <tr>
                             <th>Makanan</th>
-                            <th>Jumlah</th>
+                            <th>Deskripsi</th>
                             <th>Harga</th>
-                            <th>Subtotal</th>
+                            <th>Ubah</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th colspan="3" style="text-align:right">Total:</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
                     <tbody>
                         <?php
-                            if(!empty($_GET['meja'])){
-                            $no_meja = $_GET['meja'];
-                            $query = mysqli_query($conn,"SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_menu.harga, tb_order.status_pembayaran FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = '$no_meja'");
+                            $query = mysqli_query($conn,"SELECT * FROM tb_menu");
                             while($result = mysqli_fetch_array($query, MYSQLI_NUM)){
-                                if($result[3] != "Y"){
                         ?>
                         <tr>
-                            <td><?php echo $result[0] ?></td>
-                            <td><?php echo $result[1] ?></td>
-                            <td><?php echo $result[2] ?></td>
-                            <td><?php echo $result[1]*$result[2] ?></td>
+                            <td><input type="text" id="nama<?php echo $result[0] ?>" value="<?php echo $result[1] ?>" /></td>
+                            <td><input type="text" id="deskripsi<?php echo $result[0] ?>" value="<?php echo $result[2] ?>" /></td>
+                            <td><input type="text" id="harga<?php echo $result[0] ?>" value="<?php echo $result[3] ?>" /></td>
+                            <td><input type="submit" onclick="ubah('<?php echo $result[0] ?>')" value="Ubah" /></td>
                         </tr>
                         <?php
-                            }}}
+                            }
                         ?>
                     </tbody>
                     </tfoot>
@@ -100,6 +80,16 @@
         </div>
         </div>
         <script>
+        function ubah(id){
+            var namaID = "nama"+id; var deskID = "deskripsi"+id; var hargaID = "harga"+id;
+            var nama = document.getElementById(namaID).value;
+            var deskripsi = document.getElementById(deskID).value;
+            var harga = document.getElementById(hargaID).value;
+
+            var url = "ubah.php?nama="+nama+"&deskripsi="+deskripsi+"&harga="+harga+"&id="+id;
+            alert(url);
+            location.href = url;
+        }
         $(document).ready( function () {
             $('#table_id').DataTable({
                 "paging": false,

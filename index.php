@@ -34,6 +34,7 @@
                 <ul class="nav navbar-nav navbar-left">
                     <li class="active"><a href="index.php">Dapur</a></li>
                     <li><a href="kasir.php">Kasir</a></li>
+					<li><a href="ubahmenu.php">Admin</a></li>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
