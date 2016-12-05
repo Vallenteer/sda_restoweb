@@ -82,7 +82,10 @@
                             <td><input type="text" id="nama<?php echo $result[0] ?>" value="<?php echo $result[1] ?>" /></td>
                             <td><input type="text" id="deskripsi<?php echo $result[0] ?>" value="<?php echo $result[2] ?>" /></td>
                             <td><input type="text" id="harga<?php echo $result[0] ?>" value="<?php echo $result[3] ?>" /></td>
-                            <td><input type="submit" onclick="ubah('<?php echo $result[0] ?>')" value="Ubah" /></td>
+                            <td>
+                                <input type="submit" onclick="ubah('<?php echo $result[0] ?>')" value="Ubah" />
+                                <input type="submit" onclick="hapus('<?php echo $result[0] ?>')" value="Hapus" />
+                            </td>
                         </tr>
                         <?php
                             }
@@ -101,6 +104,11 @@
             var harga = document.getElementById(hargaID).value;
 
             var url = "ubah.php?nama="+nama+"&deskripsi="+deskripsi+"&harga="+harga+"&id="+id;
+            //alert(url);
+            location.href = url;
+        }
+         function hapus(id){
+            var url = "hapus.php?id="+id;
             //alert(url);
             location.href = url;
         }
