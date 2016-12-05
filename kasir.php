@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Monggo</title>
+        <title>Kasir</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -28,8 +28,8 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="#">Dapur</a></li>
-                    <li class="active"><a href="#">Kasir</a></li>
+                    <li><a href="index.php">Dapur</a></li>
+                    <li class="active"><a href="kasir.php">Kasir</a></li>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
@@ -40,11 +40,16 @@
                     <div class="list-group table-of-contents">
                         <?php
                             $query = mysqli_query($conn,"SELECT DISTINCT no_meja FROM `tb_order` ORDER BY no_meja ASC");
-                            while($result = mysqli_fetch_array($conn,$query)){
+                            while($result = mysqli_fetch_array($query, MYSQLI_ASSOC)){
+                            if(!empty($_GET['meja']) && $_GET['meja'] == $result['no_meja']){
                         ?>                        
-                            <a class="list-group-item" href="#Dapur">Meja <?php echo $result[0] ?></a>
+                            <a class="list-group-item active" href="kasir.php?meja=<?php echo $result['no_meja'] ?>">Meja <?php echo $result['no_meja'] ?></a>
                         <?php
-                            }
+                            }else{
+                        ?>
+                            <a class="list-group-item" href="kasir.php?meja=<?php echo $result['no_meja'] ?>">Meja <?php echo $result['no_meja'] ?></a>
+                        <?php
+                            }}
                         ?>
                     </div>
             </div>
@@ -58,16 +63,20 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                            if(!empty($_GET['meja'])){
+                            $no_meja = $_GET['meja'];
+                            $query = mysqli_query($conn,"SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_menu.harga FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = '$no_meja'");
+                            while($result = mysqli_fetch_array($query, MYSQLI_NUM)){
+                        ?>
                         <tr>
-                            <td>Row 1 Data 1</td>
-                            <td>Row 1 Data 2</td>
-                            <td>Row 1 Data 2</td>
+                            <td><?php echo $result[0] ?></td>
+                            <td><?php echo $result[1] ?></td>
+                            <td><?php echo $result[2] ?></td>
                         </tr>
-                        <tr>
-                            <td>Row 2 Data 1</td>
-                            <td>Row 2 Data 2</td>
-                            <td>Row 2 Data 2</td>
-                        </tr>
+                        <?php
+                            }}
+                        ?>
                     </tbody>
                 </table>                
                 
@@ -76,7 +85,9 @@
         </div>
         <script>
         $(document).ready( function () {
-            $('#table_id').DataTable();
+            $('#table_id').DataTable({
+                "paging": false
+            });
         } );        
         </script>
     </body>

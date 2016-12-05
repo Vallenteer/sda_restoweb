@@ -30,182 +30,52 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="active"><a href="#">Dapur</a></li>
-                    <li><a href="#">Kasir</a></li>
+                    <li class="active"><a href="index.php">Dapur</a></li>
+                    <li><a href="kasir.php">Kasir</a></li>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
 	<div class="container">
 		<div class="row">
+			<?php
+				include "conn.php";
+                $query = mysqli_query($conn,"SELECT DISTINCT no_meja FROM `tb_order` ORDER BY no_meja ASC");
+                while($result = mysqli_fetch_array($query, MYSQLI_ASSOC)){
+					$meja = $result['no_meja'];
+			?>
 			<div class="col-md-3">
 				<div class="panel panel-info">
 					<div class="panel-heading">
-						<h3 class="panel-title">Table #1 Kelvin Kristianto</h3>
+						<h3 class="panel-title">Table #<?php echo $meja ?></h3>
 					</div>
 					<div class="panel-body">
 						<ul class="list-group">
-							<li class="list-group-item done">
-								Food #1 - Done
-							</li>
+							<?php
+								$sql = "SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_order.pesanan_khusus FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = $meja";
+               					$query1 = mysqli_query($conn,$sql);
+								while($result = mysqli_fetch_array($query1, MYSQLI_NUM)){
+							?>
 							<li class="list-group-item">
 								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #2
-								<ul>
-									<li>Not Spicy</li>
-									<li>No MSG</li>
-								</ul>
+								<?php echo "<b>".$result[1]." ".$result[0]."</b>"."<br/>";
+									if(!empty($result[2])){
+										echo $result[2];
+									}
+								?>
 							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #3
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Drink #1
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Drink #2
-							</li>
+							<?php
+								}
+							?>
 						</ul>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-3">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<h3 class="panel-title">Table #2 Kelvin Kristianto</h3>
-					</div>
-					<div class="panel-body">
-						<ul class="list-group">
-							<li class="list-group-item cancel">
-								Food #1 - Cancelled
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #2
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #3
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Drink #1
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Drink #2
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-3">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<h3 class="panel-title">Table #3 Kelvin Kristianto</h3>
-					</div>
-					<div class="panel-body">
-						<ul class="list-group">
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #1
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #2
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #3
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Drink #1
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Drink #2
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<h3 class="panel-title">Table #4 Kelvin Kristianto</h3>
-					</div>
-					<div class="panel-body">
-						<ul class="list-group">
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #1
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #2
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Food #3
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Drink #1
-							</li>
-							<li class="list-group-item">
-								<span style="color:green" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span style="color:red" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-								Drink #2
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
+			<?php
+				}
+			?>
+
 		</div>
-		<div class="row">
-			<div class="col-md-3">
-				<div class="panel panel-success">
-					<div class="panel-heading">
-						<h3 class="panel-title">Table #5 Kelvin Kristianto</h3>
-					</div>
-					<div class="panel-body text-center" >
-						<strong>Finished</strong>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-3">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">Table #6 Kelvin Kristianto</h3>
-					</div>
-					<div class="panel-body text-center" >
-						<strong>Cancelled</strong>
-					</div>
-				</div>
-			</div>			
-		</div>	
 	</div>
 </body>
 </html>
