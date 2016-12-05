@@ -84,7 +84,7 @@
                             <td><input type="text" id="harga<?php echo $result[0] ?>" value="<?php echo $result[3] ?>" /></td>
                             <td>
                                 <input type="submit" onclick="ubah('<?php echo $result[0] ?>')" value="Ubah" />
-                                <input type="submit" onclick="hapus('<?php echo $result[0] ?>')" value="Hapus" />
+                                <input type="submit" onclick="hapus('<?php echo $result[0] ?>')" value="Hapus" /><!-- ini untuk delete -->
                             </td>
                         </tr>
                         <?php
