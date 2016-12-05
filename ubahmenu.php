@@ -10,6 +10,11 @@
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.12/api/sum().js"></script>
+    <style>
+        table,td,tr,th{
+            text-align:center;
+        }
+    </style>
     </head>
     <body>
         <?php
@@ -54,8 +59,21 @@
                             <th>Harga</th>
                             <th>Ubah</th>
                         </tr>
+                        <tr>
+                            <th colspan="4">Input Data</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" id="nama0" /></td>
+                            <td><input type="text" id="deskripsi0" /></td>
+                            <td><input type="text" id="harga0" /></td>
+                            <td><input type="submit" onclick="ubah('0')" value="Input" /></td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Edit Data</th>
+                        </tr>
                     </thead>
                     <tbody>
+                        
                         <?php
                             $query = mysqli_query($conn,"SELECT * FROM tb_menu");
                             while($result = mysqli_fetch_array($query, MYSQLI_NUM)){
@@ -72,10 +90,6 @@
                     </tbody>
                     </tfoot>
                 </table>   
-                <div style="text-align:right">
-                <a href="bill.php?id=<?php echo $no_meja ?>"><button type="submit">Bayar</button></a>    
-                </div>             
-                
             </div>
         </div>
         </div>
@@ -87,12 +101,13 @@
             var harga = document.getElementById(hargaID).value;
 
             var url = "ubah.php?nama="+nama+"&deskripsi="+deskripsi+"&harga="+harga+"&id="+id;
-            alert(url);
+            //alert(url);
             location.href = url;
         }
         $(document).ready( function () {
             $('#table_id').DataTable({
                 "paging": false,
+                "ordering": false,
                 drawCallback: function () {
                 var api = this.api();
                 $( api.column(3).footer() ).html(
