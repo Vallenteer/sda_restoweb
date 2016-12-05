@@ -52,7 +52,7 @@
 					<div class="panel-body">
 						<ul class="list-group">
 							<?php
-								$sql = "SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_order.pesanan_khusus, tb_menu.status_makanan FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = $meja";
+								$sql = "SELECT tb_menu.nama_makanan, tb_order.jumlah_pesanan, tb_order.pesanan_khusus, tb_order.status_makanan FROM tb_menu JOIN tb_order ON tb_menu.id_menu = tb_order.id_menu WHERE tb_order.no_meja = $meja";
                					$query1 = mysqli_query($conn,$sql);
 								while($result = mysqli_fetch_array($query1, MYSQLI_NUM)){
 							?>

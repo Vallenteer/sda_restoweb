@@ -6,8 +6,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <!-- data tables -->
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.12/api/sum().js"></script>
     </head>
     <body>
         <?php
@@ -60,8 +62,15 @@
                             <th>Makanan</th>
                             <th>Jumlah</th>
                             <th>Harga</th>
+                            <th>Subtotal</th>
                         </tr>
                     </thead>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" style="text-align:right">Total:</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                     <tbody>
                         <?php
                             if(!empty($_GET['meja'])){
@@ -73,12 +82,17 @@
                             <td><?php echo $result[0] ?></td>
                             <td><?php echo $result[1] ?></td>
                             <td><?php echo $result[2] ?></td>
+                            <td><?php echo $result[1]*$result[2] ?></td>
                         </tr>
                         <?php
                             }}
                         ?>
                     </tbody>
-                </table>                
+                    </tfoot>
+                </table>   
+                <div style="text-align:right">
+                <button type="submit">Bayar</button>    
+                </div>             
                 
             </div>
         </div>
@@ -86,7 +100,13 @@
         <script>
         $(document).ready( function () {
             $('#table_id').DataTable({
-                "paging": false
+                "paging": false,
+                drawCallback: function () {
+                var api = this.api();
+                $( api.column(3).footer() ).html(
+                    api.column( 3, {page:'all'} ).data().sum()
+                );
+                }
             });
         } );        
         </script>
